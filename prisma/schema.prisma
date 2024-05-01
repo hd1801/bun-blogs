@@ -14,25 +14,27 @@ datasource db {
 }
 
 model User {
-  id           Int            @id
-  email        String         @unique
-  name         String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  RefreshToken RefreshToken[]
-  Blog         Blog[]
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  refreshTokens RefreshToken[]
+  blogs         Blog[]
+  UserPassword  UserPassword?
 }
 
 model UserPassword {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   UserId    Int      @unique
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [UserId], references: [id])
 }
 
 model RefreshToken {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   UserId    Int
   token     String
   createdAt DateTime @default(now())
@@ -41,19 +43,20 @@ model RefreshToken {
 }
 
 model Blog {
-  id          Int       @id
+  id          Int       @id @default(autoincrement())
   title       String
-  content     String
+  content     String    @db.Text
+  bannerImage String
   AuthorId    Int
   publishedAt DateTime  @default(now())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   author      User      @relation(fields: [AuthorId], references: [id])
   BlogTag     BlogTag[]
 }
 
 model Tag {
-  id        Int       @id
+  id        Int       @id @default(autoincrement())
   name      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -61,7 +64,7 @@ model Tag {
 }
 
 model BlogTag {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   BlogId    Int
   TagId     Int
   createdAt DateTime @default(now())

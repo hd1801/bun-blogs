@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -11,7 +11,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "UserPassword" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "UserId" INTEGER NOT NULL,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -22,7 +22,7 @@ CREATE TABLE "UserPassword" (
 
 -- CreateTable
 CREATE TABLE "RefreshToken" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "UserId" INTEGER NOT NULL,
     "token" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -33,7 +33,7 @@ CREATE TABLE "RefreshToken" (
 
 -- CreateTable
 CREATE TABLE "Blog" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "AuthorId" INTEGER NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE "Blog" (
 
 -- CreateTable
 CREATE TABLE "Tag" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE "Tag" (
 
 -- CreateTable
 CREATE TABLE "BlogTag" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "BlogId" INTEGER NOT NULL,
     "TagId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -70,6 +70,9 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserPassword_UserId_key" ON "UserPassword"("UserId");
+
+-- AddForeignKey
+ALTER TABLE "UserPassword" ADD CONSTRAINT "UserPassword_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RefreshToken" ADD CONSTRAINT "RefreshToken_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
