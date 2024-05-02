@@ -1,51 +1,111 @@
 "use client";
+import { Menu, X } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useState } from "react";
 
-import Image from "next/image";
-
-export const Header = () => {
+export function Header() {
   const { data: session } = useSession();
-  return (
-    <header className="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
-      <div className="px-4">
-        <div className="flex items-center justify-between">
-          <div className="flex shrink-0">
-            <a aria-current="page" className="flex items-center" href="/">
-              <Image
-                width={28}
-                height={28}
-                className="h-7 w-auto"
-                src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
-                alt=""
-              />
-              <p className="sr-only">Blogs</p>
-            </a>
-          </div>
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-          <div className="flex items-center justify-end gap-3">
-            {session ? (
-              <div className="flex flex-row gap-3">
-                <button className="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex">
-                  Create blog
-                </button>
-                <button
-                  className="hidden items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
-                  onClick={() => signOut()}
-                >
-                  Log out
-                </button>
-              </div>
-            ) : (
-              <button
-                className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                onClick={() => signIn()}
-              >
-                Sign in
-              </button>
-            )}
-          </div>
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <div className="relative w-full bg-white border">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
+        <div className="inline-flex items-center space-x-2">
+          <span></span>
+          <span className="font-bold">Blogs</span>
         </div>
+        <div className="flex grow justify-center">
+          <input
+            className="flex h-10 w-[250px] rounded-md bg-gray-100 px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+            type="text"
+            placeholder="Search"
+          />
+        </div>
+        <div className="hidden space-x-2 lg:block">
+          {session ? (
+            <>
+              <button
+                type="button"
+                className="rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-black hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Create Blog
+              </button>
+              <button
+                type="button"
+                className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                onClick={() => signOut()}
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              onClick={() => signIn()}
+            >
+              Log In
+            </button>
+          )}
+        </div>
+        <div className="lg:hidden">
+          <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
+        </div>
+        {isMenuOpen && (
+          <div className="absolute inset-x-0 top-0 z-50 origin-top-right transform p-2 transition lg:hidden">
+            <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+              <div className="px-5 pb-6 pt-5">
+                <div className="flex items-center justify-between">
+                  <div className="inline-flex items-center space-x-2">
+                    <span className="font-bold">Blogs</span>
+                  </div>
+                  <div className="-mr-2">
+                    <button
+                      type="button"
+                      onClick={toggleMenu}
+                      className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    >
+                      <span className="sr-only">Close menu</span>
+                      <X className="h-6 w-6" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+                <div className="mt-2 space-y-2">
+                  {session ? (
+                    <>
+                      <button
+                        type="button"
+                        className="w-full rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                      >
+                        Create Blog
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => signOut()}
+                        className="w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => signIn()}
+                      className="w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    >
+                      Sign In
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </header>
+    </div>
   );
-};
+}
