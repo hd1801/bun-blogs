@@ -9,8 +9,8 @@ export default NextAuth({
       id: "login",
       name: "Login",
       credentials: {
-        username: { label: "email", type: "text", placeholder: "" },
-        password: { label: "password", type: "password", placeholder: "" },
+        username: { label: "email", type: "text" },
+        password: { label: "password", type: "password" },
       },
       async authorize({ email, password }: any) {
         try {
@@ -30,9 +30,9 @@ export default NextAuth({
       id: "signup",
       name: "Sign Up",
       credentials: {
-        name: { label: "name", type: "text", placeholder: "" },
-        email: { label: "email", type: "text", placeholder: "" },
-        password: { label: "password", type: "password", placeholder: "" },
+        name: { label: "name", type: "text" },
+        email: { label: "email", type: "text" },
+        password: { label: "password", type: "password" },
       },
       async authorize({ name, email, password }: any) {
         try {
@@ -65,5 +65,10 @@ export default NextAuth({
       return session;
     },
   },
+  pages: {
+    signIn: "/signin",
+    newUser: "/signup",
+  },
+
   secret: process.env.NEXTAUTH_SECRET,
 });
