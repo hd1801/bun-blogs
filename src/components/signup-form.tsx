@@ -17,7 +17,8 @@ export const SignUpForm = ({ callbackUrl, error }: AuthFormProps) => {
   };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await signIn("login", {
+    await signIn("signup", {
+      name: state.name,
       email: state.email,
       password: state.password,
       callbackUrl: callbackUrl || "/",
