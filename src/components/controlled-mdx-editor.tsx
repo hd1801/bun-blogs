@@ -1,3 +1,4 @@
+'use client'
 import { MDXEditorProps } from "@mdxeditor/editor";
 import { Controller, useFormContext } from "react-hook-form";
 import { ForwardRefEditor } from "./forward-ref-editor";

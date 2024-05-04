@@ -1,4 +1,4 @@
-import clsx from "clsx";
+"use client";
 import { DetailedHTMLProps, InputHTMLAttributes, ReactNode } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 

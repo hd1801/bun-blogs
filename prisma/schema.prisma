@@ -46,7 +46,7 @@ model Blog {
   id          Int       @id @default(autoincrement())
   title       String
   content     String    @db.Text
-  bannerImage String
+  bannerImage String?
   AuthorId    Int
   publishedAt DateTime  @default(now())
   createdAt   DateTime  @default(now())
@@ -57,7 +57,7 @@ model Blog {
 
 model Tag {
   id        Int       @id @default(autoincrement())
-  name      String
+  name      String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   BlogTag   BlogTag[]
@@ -69,6 +69,6 @@ model BlogTag {
   TagId     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  blog      Blog     @relation(fields: [BlogId], references: [id])
-  tag       Tag      @relation(fields: [TagId], references: [id])
+  blog      Blog?    @relation(fields: [BlogId], references: [id])
+  tag       Tag?     @relation(fields: [TagId], references: [id])
 }

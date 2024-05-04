@@ -1,8 +1,8 @@
 import prisma from "@/db";
+import { NextRequest, NextResponse } from "next/server";
 
-// Path: /api/blogs
-export async function GET() {
+export async function GET(req: NextRequest, res: NextResponse) {
   return prisma.blog.findMany({});
 }
 
-export async function POST() {}
+export async function POST(req: NextRequest, res: NextResponse) {}
