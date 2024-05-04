@@ -1,6 +1,7 @@
 "use client";
 import { Menu, X } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 
 export function Header() {
@@ -28,12 +29,14 @@ export function Header() {
         <div className="hidden space-x-2 lg:block">
           {session ? (
             <>
-              <button
-                type="button"
-                className="rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-black hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-              >
-                Create Blog
-              </button>
+              <Link href="/new-blog">
+                <button
+                  type="button"
+                  className="rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-black hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                >
+                  Create Blog
+                </button>
+              </Link>
               <button
                 type="button"
                 className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
