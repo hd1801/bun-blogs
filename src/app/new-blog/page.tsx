@@ -27,10 +27,8 @@ export default function CreateBlogPage() {
       <form
         ref={ref}
         action={(e) => {
-          fields.forEach((field) => {
-            e.append("tags[]", field.name);
-          });
           e.append("content", form.getValues("content"));
+          e.set("tags", JSON.stringify(form.getValues("tags")));
           createBlog(e);
         }}
       >
@@ -39,13 +37,10 @@ export default function CreateBlogPage() {
           <button
             type="submit"
             onClick={(e) => {
-              console.log("click");
               e.preventDefault();
               form.handleSubmit((data) => {
-                console.log("handlesubmit");
-                console.log(data);
                 ref.current?.requestSubmit();
-              }, console.log)();
+              })();
             }}
           >
             Save

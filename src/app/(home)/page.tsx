@@ -9,21 +9,44 @@ interface PageProps {
     page?: number;
   };
 }
-export default async function Home(props: any) {
-  console.log(props);
+
+export default async function Home(props: PageProps) {
+  const { tag, page, search } = props.searchParams;
   const data = await prisma.blog.findMany({
-    take: 10,
+    where: {
+      AND: [
+        search
+          ? {
+              title: {
+                contains: search,
+                mode: "insensitive", // case-insensitive
+              },
+            }
+          : {},
+        tag
+          ? {
+              blogTags: {
+                // changed to blogTags
+                some: {
+                  tag: {
+                    name: {
+                      equals: tag,
+                      mode: "insensitive",
+                    },
+                  },
+                },
+              },
+            }
+          : {},
+      ],
+    },
     include: {
-      author: true,
-      BlogTag: {
-        include: {
-          tag: {
-            where: {
-              name: "tech",
-            },
-          },
-        },
-      },
+      blogTags: true,
+    },
+    take: 10,
+    skip: page ? (page - 1) * 10 : 0,
+    orderBy: {
+      createdAt: "desc",
     },
   });
   return (

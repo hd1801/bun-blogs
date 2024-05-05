@@ -1,29 +1,11 @@
 "use server";
 import prisma from "@/db";
 import { getUserByEmail } from "@/lib";
-import { blogSchema } from "@/schema";
 import { Blog, Tag } from "@prisma/client";
 import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-const validateBlog = async (formData: FormData) => {
-  console.log(formData);
-  const validatedFields = await blogSchema.validate(
-    {
-      title: formData.get("title"),
-      coverImage: formData.get("coverImage"),
-      tags: formData.getAll("tags"),
-      content: formData.get("content"),
-    },
-    {
-      strict: true,
-    }
-  );
-  if (!validatedFields) {
-    throw new Error("Invalid fields");
-  }
-  return validatedFields;
-};
 const getUserFromSession = async () => {
   const session = await getServerSession();
   if (!session || !session.user || !session?.user?.email) {
@@ -38,13 +20,11 @@ const getUserFromSession = async () => {
 
 async function createBlogWithTags(blogData: Blog, tags: Pick<Tag, "name">[]) {
   for (const tag of tags) {
-    console.log(tag);
     const newTag = await prisma.tag.upsert({
       where: { name: tag.name },
       update: {},
       create: { name: tag.name },
     });
-    console.log(newTag);
     await prisma.blogTag.create({
       data: {
         BlogId: blogData.id,
@@ -55,23 +35,18 @@ async function createBlogWithTags(blogData: Blog, tags: Pick<Tag, "name">[]) {
 }
 
 export const createBlog = async (formData: FormData) => {
-  "use server";
-  const validatedFields = await validateBlog(formData);
-  console.log(validatedFields);
-  const { content, coverImage, title, tags } = validatedFields;
-  const user = await getUserFromSession();
-  const blog = await prisma.blog.create({
-    data: {
-      title,
-      bannerImage: coverImage || null,
-      content,
-      AuthorId: user?.id,
-      publishedAt: new Date(),
+  const response = await fetch("http://localhost:3000/api/blogs", {
+    method: "POST",
+    body: formData,
+    headers: {
+      cookie: headers().get("cookie") || "",
     },
   });
-  console.log(tags);
-  if (tags) {
-    await createBlogWithTags(blog, tags);
+  const data = await response.json();
+  if (response.ok) {
+    redirect(`/`);
   }
-  // redirect(`/`);
+  return {
+    errors: data,
+  };
 };

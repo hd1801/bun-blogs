@@ -52,7 +52,7 @@ model Blog {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   author      User      @relation(fields: [AuthorId], references: [id])
-  BlogTag     BlogTag[]
+  blogTags     BlogTag[]
 }
 
 model Tag {
