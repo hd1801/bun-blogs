@@ -23,7 +23,7 @@ export default function CreateBlogPage() {
   });
 
   return (
-    <div className="h-screen w-full p-4 flex flex-col gap-2 ">
+    <FormProvider {...form}>
       <form
         ref={ref}
         action={(e) => {
@@ -32,19 +32,21 @@ export default function CreateBlogPage() {
           createBlog(e);
         }}
       >
-        <FormProvider {...form}>
-          <h1 className="text-2xl font-semibold">Write your blog</h1>
-          <button
-            type="submit"
-            onClick={(e) => {
-              e.preventDefault();
-              form.handleSubmit((data) => {
-                ref.current?.requestSubmit();
-              })();
-            }}
-          >
-            Save
-          </button>
+        <div className="h-screen w-full p-4 flex flex-col gap-2 ">
+          <div className="flex w-full justify-between">
+            <h1 className="text-2xl font-semibold">Write your blog</h1>
+            <button
+              type="submit"
+              onClick={(e) => {
+                e.preventDefault();
+                form.handleSubmit((data) => {
+                  ref.current?.requestSubmit();
+                })();
+              }}
+            >
+              Save
+            </button>
+          </div>
           <div className="w-full flex flex-col gap-2">
             <ControlledInputField
               name="title"
@@ -89,17 +91,16 @@ export default function CreateBlogPage() {
               ))}
             </div>
           </div>
-          <div className="flex-1 w-full pt-2">
+          <div className="flex flex-col flex-1 w-full p-2">
             <ControlledMDXEditor
               name="content"
-              markdown=""
-              className="p-4 h-ful"
-              contentEditableClassName="w-full flex-1 bg-gray-50"
-              autoFocus
+              markdown="write here"
+              className="p-4 h-full"
+              contentEditableClassName="w-full flex-1 h-full bg-gray-50"
             />
           </div>
-        </FormProvider>
+        </div>
       </form>
-    </div>
+    </FormProvider>
   );
 }

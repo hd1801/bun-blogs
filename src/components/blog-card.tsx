@@ -1,49 +1,52 @@
-import { Blog } from "@prisma/client";
-import { ArrowUpRight } from "lucide-react";
+import { Prisma } from "@prisma/client";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-
-export function BlogCard({ blog }: { blog: Blog }) {
+import Link from "next/link";
+interface BlogCardProps {
+  blog: Prisma.BlogGetPayload<{
+    include: {
+      author: true;
+      blogTags: {
+        include: {
+          tag: true;
+        };
+      };
+    };
+  }>;
+}
+export function BlogCard({ blog }: BlogCardProps) {
   return (
-    <div className="w-[300px] rounded-md border">
-      {!!blog.bannerImage && (
+    <Link href={`/${blog.id}`}>
+      <div className="flex flex-col text-cyan-900 rounded-2xl   hover:shadow-lg relative">
+        <div
+          className="p-4 w-full h-40
+        py-2 text-lg bg-[#00000088] backdrop-blur-sm
+        rounded-t-2xl text-white font-bold absolute"
+        ></div>
         <Image
+          className="w-full h-40 object-cover rounded-t-2xl"
+          src={blog.bannerImage || ""}
           width={300}
-          height={400}
-          src={blog.bannerImage}
-          alt="Laptop"
-          className="h-[200px] w-full rounded-t-md object-cover"
+          height={100}
+          alt={blog.title}
         />
-      )}
-      <div className="p-4">
-        <h1 className="inline-flex items-center text-lg font-semibold">
-          {blog.title}&nbsp; <ArrowUpRight className="h-4 w-4" />
-        </h1>
-        <p
-          className="mt-3 text-sm text-gray-600 "
-          style={{
-            maxLines: 3,
-          }}
+        <div
+          className="p-4
+        pb-2 bg-cyan-50 "
         >
-          {blog.content.slice(0, 40)}
-        </p>
-        <div className="mt-4">
-          <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
-            #Macbook
+          <span className="text-cyan-700 text-xs">
+            {blog.publishedAt.toDateString()}
           </span>
-          <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
-            #Apple
-          </span>
-          <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-semibold text-gray-900">
-            #Laptop
-          </span>
+          <h1 className="text-xl text-cyan-900 font-bold">{blog.title}</h1>
         </div>
-        <button
-          type="button"
-          className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+        <div
+          className="px-5 
+        flex rounded-b-2xl justify-end
+        text-neutral-700 bg-cyan-50   pb-3 "
         >
-          Read
-        </button>
+          <ArrowRight />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

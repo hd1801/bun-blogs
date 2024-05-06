@@ -26,7 +26,6 @@ export default async function Home(props: PageProps) {
         tag
           ? {
               blogTags: {
-                // changed to blogTags
                 some: {
                   tag: {
                     name: {
@@ -41,7 +40,12 @@ export default async function Home(props: PageProps) {
       ],
     },
     include: {
-      blogTags: true,
+      author: true,
+      blogTags: {
+        include: {
+          tag: true,
+        },
+      },
     },
     take: 10,
     skip: page ? (page - 1) * 10 : 0,
@@ -50,7 +54,7 @@ export default async function Home(props: PageProps) {
     },
   });
   return (
-    <main className="flex flex-1 h-full bg-slate-400 flex-row gap-8 flex-wrap p-4 justify-center">
+    <main className="grid md:grid-cols-2 lg:grid-cols-3 p-5 gap-10 grid-flow-dense">
       {!data.length && (
         <div className="text-xl font-bold h-full flex flex-col items-center justify-center">
           <h2>No Results</h2>

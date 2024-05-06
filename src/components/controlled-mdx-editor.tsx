@@ -25,7 +25,6 @@ export const ControlledMDXEditor = ({
         return (
           <div>
             <ForwardRefEditor
-              {...rest}
               markdown={value || ""}
               onChange={onChange}
               onBlur={onBlur}
