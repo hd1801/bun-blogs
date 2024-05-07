@@ -6,7 +6,7 @@ export default function HomeLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="h-screen w-screen">
       <Header />
       {children}
     </div>

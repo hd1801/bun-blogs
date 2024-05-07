@@ -26,7 +26,7 @@ export function BlogCard({ blog }: BlogCardProps) {
         <Image
           className="w-full h-40 object-cover rounded-t-2xl"
           src={blog.bannerImage || ""}
-          width={300}
+          width={200}
           height={100}
           alt={blog.title}
         />

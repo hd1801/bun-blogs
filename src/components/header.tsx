@@ -16,15 +16,9 @@ export function Header() {
     <div className="relative w-full bg-white border">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
         <div className="inline-flex items-center space-x-2">
-          <span></span>
-          <span className="font-bold">Blogs</span>
-        </div>
-        <div className="flex grow justify-center">
-          <input
-            className="flex h-10 w-[250px] rounded-md bg-gray-100 px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-            type="text"
-            placeholder="Search"
-          />
+          <Link href="/">
+            <span className="font-bold">Blogs</span>
+          </Link>
         </div>
         <div className="hidden space-x-2 lg:block">
           {session ? (
@@ -80,12 +74,14 @@ export function Header() {
                 <div className="mt-2 space-y-2">
                   {session ? (
                     <>
-                      <button
-                        type="button"
-                        className="w-full rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                      >
-                        Create Blog
-                      </button>
+                      <Link href="/new-blog">
+                        <button
+                          type="button"
+                          className="w-full rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                        >
+                          Create Blog
+                        </button>
+                      </Link>
                       <button
                         type="button"
                         onClick={() => signOut()}
